@@ -2,10 +2,10 @@
 <html lang="ja">
 <head>
   <mata charset="utf-8">
-  <title><%= @title %></title>
+  <title><%= @main_title %></title>
 </head>
 <body>
-  <h1><%= @title %></h1>
+  <h1><%= @main_title %></h1>
   <p><%= @subtitle %></p>
   <form action="/" method="post">
     <div>
@@ -15,7 +15,7 @@
       <textarea type="text" id="content" name="content"></textarea>
     </div>
     <div>
-      <button type="button" onclick="location.href='/'">back</button>
+      <button type="button" onclick="location.href='/'">back_</button>
     <div>
     <div>
       <input type="submit" value="<%= @button %>">

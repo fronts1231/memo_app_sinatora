@@ -3,33 +3,34 @@ require 'sinatra/reloader'
 require 'csv'
 
 get '/' do
-  @title = 'メモアプリ'
+  @main_title = 'メモアプリ'
   @subtitle = 'show saved notes here'
   erb :index
 end
 
 get '/new' do
-  @title = 'メモアプリ'
+  @main_title = 'メモアプリ'
   @subtitle = 'create new note here'
   @button = 'send'
   erb :edit
 end
 
 get '/:name' do |n|
-  @title = 'メモアプリ'
-  @subtitle = "show #{n} content here"
-  erb :index
+  @main_title = 'メモアプリ'
+  data = CSV.read('data.csv')[n.to_i]
+  @title = data[0]
+  @content = data[1]
+  @button = "edit"
+  erb :show_item
 end
 
 get '/:name/edit' do |n|
-  @title = 'メモアプリ'
-  @subtitle = "edit #{n} here"
-  @button = "edit"
-  erb :edit
+  @main_title = 'メモアプリ'
+  erb :edit_item
 end
 
 post '/' do
-  @title = 'メモアプリ'
+  @main_title = 'メモアプリ'
   @subtitle = 'show saved notes here'
 
   data = CSV.open('data.csv','a')
