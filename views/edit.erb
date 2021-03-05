@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <mata charset="utf-8">
+  <title><%= @title %></title>
+</head>
+<body>
+  <h1><%= @title %></h1>
+  <p><%= @subtitle %></p>
+  <form action="/" method="post">
+    <div>
+      <input type="text" id="title" name="title[]">
+    </div>
+    <div>
+      <textarea type="text" id="content" name="content[]"></textarea>
+    </div>
+    <div>
+      <button type="button" onclick="location.href='/'">back</button>
+    <div>
+    <div>
+      <input type="submit" value="<%= @button %>">
+    </div>
+  </form>
+  <p><%= Time.now %></p>
+</body>
+</html>

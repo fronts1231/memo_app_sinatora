@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <mata charset="utf-8">
+  <title><%= @title %></title>
+</head>
+<body>
+  <h1><%= @title %></h1>
+  <p><%= @subtitle %></p>
+  <button type="button" onclick="location.href='/new'">new</button>
+  <ul>
+    <% @titles.each do |title| %>
+    <li data-id= "<%= title %>">
+        <%= title %>
+    </li>
+    <% end %>
+  </ul>
+  <p><%= Time.now %></p>
+</body>
+</html>
