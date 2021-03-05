@@ -31,6 +31,11 @@ end
 post '/' do
   @title = 'メモアプリ'
   @subtitle = 'show saved notes here'
-  @titles = params[:title]
+
+  data = CSV.open('data.csv','a')
+    data.puts [params[:title],params[:content]]
+  data.close
+  
+  @titles = CSV.read('data.csv').map{|row| row[0]}
   erb :index
 end
