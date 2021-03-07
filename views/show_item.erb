@@ -7,8 +7,19 @@
 <body>
   <h1><%= @main_title %></h1>
   <p><%= @title %></p>
+  <form action="<%= @index %>/deleted" method="post">
   <p><%= @content.gsub(/\n/, '<br/>') %></p>
-  <button type="button" onclick="location.href='/new'"><%= @button %></button>
+  <div>
+    <button type="button" onclick="location.href='/'">back</button>
+  </div>
+  <div>
+    <button type="button" onclick="location.href='<%= @index %>/edit'">edit</button>
+  </div>
+  <div>
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" value="delete">
+  </div>
+  </form>
   <p><%= Time.now %></p>
 </body>
 </html>
