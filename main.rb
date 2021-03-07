@@ -46,7 +46,7 @@ post '/' do
   # CSV.table('data.csv') << CSV::Row.new([title,content],[params[:title],params[:content]])
   
   data = CSV.open('data.csv','a')
-  data.puts [params[:title],params[:content]]
+  data.puts([params[:title],params[:content]])
   data.close
 
   @titles = CSV.table('data.csv').map{|row| row[0]}
@@ -67,4 +67,19 @@ delete '/:id/deleted' do |n|
   end
   
   erb :deleted
+end
+
+patch '/:id/edited' do |n|
+  @main_title = 'メモアプリ'
+  @subtitle = 'this item has been updated'
+  
+  data = CSV.read('data.csv')
+  data[n.to_i] = [params[:title],params[:content]]
+  CSV.open('data.csv','w') do |row|
+    data.each do |item| 
+      row.puts(item)
+    end
+  end
+  
+  erb :edited
 end

@@ -7,7 +7,7 @@
 <body>
   <h1><%= @main_title %></h1>
   <p><%= @subtitle %></p>
-  <form action="/" method="post">
+  <form action="/<%= @index %>/edited" method="post">
     <div>
       <input type="text" id="title" name="title" value =<%= @title %>>
     </div>
@@ -18,7 +18,8 @@
       <button type="button" onclick="location.href='/<%= @index %>'">back</button>
     <div>
     <div>
-      <input type="submit" value="<%= @button %>">
+      <input type="hidden" name="_method" value="PATCH">
+      <input type="submit" value="save">
     </div>
   </form>
   <p><%= Time.now %></p>
