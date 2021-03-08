@@ -1,5 +1,5 @@
 <p><%= @title %></p>
-<p><%= @content.gsub(/\n/, '<br/>') %></p>
+<p><%= @content ? @content.gsub(/\n/, '<br/>') : '' %></p>
 <div>
   <% if @index %>
     <button type="button" onclick="location.href='/<%= @index %>'">back</button>
