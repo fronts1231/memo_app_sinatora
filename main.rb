@@ -98,4 +98,3 @@ patch '/:id/edit' do |n|
     redirect("/#{n}/edit?session=warning")
   end
 end
-  
