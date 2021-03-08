@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'csv'
 include ERB::Util
+enable :sessions
 $stdout.sync = true
 
 helpers do
@@ -12,12 +13,22 @@ end
 
 get '/' do
   @main_title = MAIN_TITLE
+  if params[:session] == 'new'
+    @subtitle = 'new item created'
+  elsif params[:session] == 'deleted'
+    @subtitle = 'succesfully deleted'
+  elsif params[:session] == 'updated'
+    @subtitle = 'successfully updated'
+  end
   @titles = CSV.read(DATA_FILE).map{|row| row[0]}
   erb :index
 end
 
 get '/new' do
   @main_title = MAIN_TITLE
+  if params[:session] == 'warning'
+    @subtitle = 'title cannot be blank'
+  end
   erb :add_item
 end
 
@@ -30,8 +41,11 @@ get '/:id' do |n|
   erb :show_item
 end
 
-get '/:name/edit' do |n|
+get '/:id/edit' do |n|
   @main_title = MAIN_TITLE
+  if params[:session] == 'warning'
+    @subtitle = 'title cannot be blank'
+  end
   data = CSV.read(DATA_FILE)[n.to_i]
   @title = data[0]
   @content = data[1]
@@ -41,10 +55,7 @@ get '/:name/edit' do |n|
   erb :edit_item
 end
 
-post '/new/confirm' do
-  @main_title = MAIN_TITLE
-  @subtitle = 'new item created as below'
-  
+post '/new' do
   if escape(params[:title]) != ''
     @title = escape(params[:title])
     @content = escape(params[:content])
@@ -52,16 +63,13 @@ post '/new/confirm' do
       data.puts([@title,@content])
     data.close
     @titles = CSV.table(DATA_FILE).map{|row| row[0]}
-
+    redirect('/?session=new')
   else
-    @subtitle = 'title cannot be blank'
+    redirect('/new?session=warning')
   end
-  erb :confirm
 end
 
 delete '/:id/deleted' do |n|
-  @main_title = MAIN_TITLE
-  @subtitle = 'this item has been successfully deleted'
   data = CSV.read(DATA_FILE)
   data.delete_at(n.to_i)
   CSV.open(DATA_FILE,'w') do |row|
@@ -69,28 +77,25 @@ delete '/:id/deleted' do |n|
       row.puts(item)
     end
   end
-  erb :confirm
+  redirect('/?session=deleted')
 end
 
-patch '/:id/edit/confirm' do |n|
+patch '/:id/edit' do |n|
   @main_title = MAIN_TITLE
   @index = n
   
   if escape(params[:title]) != ''
-    @subtitle = 'this item has been successfully updated as below'
-    @title = escape(params[:title])
-    @content = escape(params[:content])
     data = CSV.read(DATA_FILE)
-    data[n.to_i] = [@title,@content]
+    data[n.to_i] = [escape(params[:title]),escape(params[:content])]
     CSV.open(DATA_FILE,'w') do |row|
       data.each do |item| 
         row.puts(item)
       end
     end
+    redirect('/?session=updated')
     
   else
-    @subtitle = 'title cannot be blank'
+    redirect("/#{n}/edit?session=warning")
   end
-  erb :confirm
 end
   
