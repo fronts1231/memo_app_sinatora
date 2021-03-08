@@ -1,0 +1,9 @@
+<p><%= @subtitle %></p>
+<p><%= @title %></p>
+<p><%= @content.gsub(/\n/, '<br/>') %></p>
+<div>
+  <% if @index %>
+    <button type="button" onclick="location.href='/<%= @index %>'">back</button>
+  <% end %>
+  <button type="button" onclick="location.href='/'">home</button>
+</div>
