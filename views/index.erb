@@ -1,20 +1,9 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <mata charset="utf-8">
-  <title><%= @main_title %></title>
-</head>
-<body>
-  <h1><%= @main_title %></h1>
-  <p><%= @subtitle %></p>
-  <button type="button" onclick="location.href='/new'">add</button>
-  <ul>
-    <% @titles.each_with_index do |title, i| %>
-    <li>
-        <a href= "/<%= i %>" ><%= title %></a>
-    </li>
-    <% end %>
-  </ul>
-  <p><%= Time.now %></p>
-</body>
-</html>
+<p><%= @subtitle %></p>
+<button type="button" onclick="location.href='/new'">add</button>
+<ul>
+  <% @titles.each_with_index do |title, i| %>
+  <li>
+      <a href= "/<%= i %>" ><%= title %></a>
+  </li>
+  <% end %>
+</ul>

@@ -21,7 +21,6 @@ end
 get '/:id' do |n|
   @main_title = 'メモアプリ'
   data = CSV.read('data.csv')[n.to_i]
-  p(data)
   @title = data[0]
   @content = data[1]
   @index = n
@@ -42,8 +41,6 @@ end
 post '/' do
   @main_title = 'メモアプリ'
   @subtitle = 'show saved notes here'
-  
-  # CSV.table('data.csv') << CSV::Row.new([title,content],[params[:title],params[:content]])
   
   data = CSV.open('data.csv','a')
   data.puts([params[:title],params[:content]])
