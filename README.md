@@ -13,7 +13,7 @@
   ```
   bundle install
   ```
-### sinatra, webrick, and sinatra-contrib will be installed
+sinatra, webrick, and sinatra-contrib will be installed
  ## Launch main.rb
  ```
  bundle exec ruby main.rb
