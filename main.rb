@@ -1,7 +1,14 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'csv'
+include ERB::Util
 $stdout.sync = true
+
+helpers do
+  def escape(text)
+    html_escape(text)
+  end
+end
 
 get '/' do
   @main_title = MAIN_TITLE
@@ -38,19 +45,18 @@ post '/new/confirm' do
   @main_title = MAIN_TITLE
   @subtitle = 'new item created as below'
   
-  if params[:title] != ''
-    @title = params[:title]
-    @content = params[:content]
+  if escape(params[:title]) != ''
+    @title = escape(params[:title])
+    @content = escape(params[:content])
     data = CSV.open(DATA_FILE,'a')
-      data.puts([params[:title],params[:content]])
+      data.puts([@title,@content])
     data.close
     @titles = CSV.table(DATA_FILE).map{|row| row[0]}
-    erb :confirm
 
   else
-    @subtitle = 'title can not be blank'
-    erb :confirm
+    @subtitle = 'title cannot be blank'
   end
+  erb :confirm
 end
 
 delete '/:id/deleted' do |n|
@@ -70,22 +76,21 @@ patch '/:id/edit/confirm' do |n|
   @main_title = MAIN_TITLE
   @index = n
   
-  if params[:title] != ''
+  if escape(params[:title]) != ''
     @subtitle = 'this item has been successfully updated as below'
-    @title = params[:title]
-    @content = params[:content]
+    @title = escape(params[:title])
+    @content = escape(params[:content])
     data = CSV.read(DATA_FILE)
-    data[n.to_i] = [params[:title],params[:content]]
+    data[n.to_i] = [@title,@content]
     CSV.open(DATA_FILE,'w') do |row|
       data.each do |item| 
         row.puts(item)
       end
     end
-    erb :confirm
     
   else
-    @subtitle = 'title can not be blank'
-    erb :confirm
+    @subtitle = 'title cannot be blank'
   end
+  erb :confirm
 end
   
