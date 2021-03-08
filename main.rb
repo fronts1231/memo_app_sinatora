@@ -4,14 +4,14 @@ require 'csv'
 $stdout.sync = true
 
 get '/' do
-  @main_title = 'メモアプリ'
+  @main_title = MAIN_TITLE
   @subtitle = 'show saved notes here'
-  @titles = CSV.read('data.csv').map{|row| row[0]}
+  @titles = CSV.read(DATA_FILE).map{|row| row[0]}
   erb :index
 end
 
 get '/new' do
-  @main_title = 'メモアプリ'
+  @main_title = MAIN_TITLE
   @subtitle = 'create new note here'
   @title = ''
   @content = ''
@@ -19,8 +19,8 @@ get '/new' do
 end
 
 get '/:id' do |n|
-  @main_title = 'メモアプリ'
-  data = CSV.read('data.csv')[n.to_i]
+  @main_title = MAIN_TITLE
+  data = CSV.read(DATA_FILE)[n.to_i]
   @title = data[0]
   @content = data[1]
   @index = n
@@ -28,8 +28,8 @@ get '/:id' do |n|
 end
 
 get '/:name/edit' do |n|
-  @main_title = 'メモアプリ'
-  data = CSV.read('data.csv')[n.to_i]
+  @main_title = MAIN_TITLE
+  data = CSV.read(DATA_FILE)[n.to_i]
   @title = data[0]
   @content = data[1]
   @button = "save"
@@ -39,25 +39,25 @@ get '/:name/edit' do |n|
 end
 
 post '/' do
-  @main_title = 'メモアプリ'
+  @main_title = MAIN_TITLE
   @subtitle = 'show saved notes here'
   
-  data = CSV.open('data.csv','a')
+  data = CSV.open(DATA_FILE,'a')
   data.puts([params[:title],params[:content]])
   data.close
 
-  @titles = CSV.table('data.csv').map{|row| row[0]}
+  @titles = CSV.table(DATA_FILE).map{|row| row[0]}
   
   erb :index
 end
 
 delete '/:id/deleted' do |n|
-  @main_title = 'メモアプリ'
+  @main_title = MAIN_TITLE
   @subtitle = 'this item has been deleted'
   
-  data = CSV.read('data.csv')
+  data = CSV.read(DATA_FILE)
   data.delete_at(n.to_i)
-  CSV.open('data.csv','w') do |row|
+  CSV.open(DATA_FILE,'w') do |row|
     data.each do |item| 
       row.puts(item)
     end
@@ -67,12 +67,12 @@ delete '/:id/deleted' do |n|
 end
 
 patch '/:id/edited' do |n|
-  @main_title = 'メモアプリ'
+  @main_title = MAIN_TITLE
   @subtitle = 'this item has been updated'
   
-  data = CSV.read('data.csv')
+  data = CSV.read(DATA_FILE)
   data[n.to_i] = [params[:title],params[:content]]
-  CSV.open('data.csv','w') do |row|
+  CSV.open(DATA_FILE,'w') do |row|
     data.each do |item| 
       row.puts(item)
     end
