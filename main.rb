@@ -1,3 +1,4 @@
+require './const.rb'
 require 'sinatra'
 require 'sinatra/reloader'
 require 'csv'
