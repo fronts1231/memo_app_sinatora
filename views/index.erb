@@ -1,0 +1,8 @@
+<button type="button" onclick="location.href='/new'">new</button>
+<ul>
+  <% @titles.each_with_index do |title, i| %>
+  <li>
+      <a href= "/<%= i %>" ><%= title %></a>
+  </li>
+  <% end %>
+</ul>

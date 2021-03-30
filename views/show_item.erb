@@ -1,0 +1,14 @@
+<p><%= @title %></p>
+<form action="<%= @index %>/deleted" method="post">
+<p><%= @content.gsub(/\n/, '<br/>') %></p>
+<div>
+  <button type="button" onclick="location.href='/'">home</button>
+</div>
+<div>
+  <button type="button" onclick="location.href='<%= @index %>/edit'">edit</button>
+</div>
+<div>
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="submit" value="delete">
+</div>
+</form>
