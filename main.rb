@@ -14,12 +14,9 @@ end
 
 get '/' do
   @main_title = MAIN_TITLE
-  if params[:session] == 'new'
-    @subtitle = 'new item created'
-  elsif params[:session] == 'deleted'
-    @subtitle = 'succesfully deleted'
-  elsif params[:session] == 'updated'
-    @subtitle = 'successfully updated'
+  if session
+    @subtitle = session[:message]
+    session[:message] = ''
   end
   @titles = CSV.read(DATA_FILE).map{|row| row[0]}
   erb :index
@@ -27,8 +24,9 @@ end
 
 get '/new' do
   @main_title = MAIN_TITLE
-  if params[:session] == 'warning'
-    @subtitle = 'title cannot be blank'
+  if session
+    @subtitle = session[:message]
+    session[:message] = ''
   end
   erb :add_item
 end
@@ -44,8 +42,9 @@ end
 
 get '/:id/edit' do |n|
   @main_title = MAIN_TITLE
-  if params[:session] == 'warning'
-    @subtitle = 'title cannot be blank'
+  if session
+    @subtitle = session[:message]
+    session[:message] = ''
   end
   data = CSV.read(DATA_FILE)[n.to_i]
   @title = data[0]
@@ -64,9 +63,11 @@ post '/new' do
       data.puts([@title,@content])
     data.close
     @titles = CSV.table(DATA_FILE).map{|row| row[0]}
-    redirect('/?session=new')
+    session[:message] = 'new item created'
+    redirect to('/')
   else
-    redirect('/new?session=warning')
+    session[:message] = 'title cannot be blank'
+    redirect to('/new')
   end
 end
 
@@ -78,7 +79,8 @@ delete '/:id/deleted' do |n|
       row.puts(item)
     end
   end
-  redirect('/?session=deleted')
+  session[:message] = 'succesfully deleted'
+  redirect to('/')
 end
 
 patch '/:id/edit' do |n|
@@ -93,9 +95,11 @@ patch '/:id/edit' do |n|
         row.puts(item)
       end
     end
-    redirect('/?session=updated')
+    session[:message] = 'successfully updated'
+    redirect to ('/')
     
   else
-    redirect("/#{n}/edit?session=warning")
+    session[:message] = 'title cannot be blank'
+    redirect to("/#{n}/edit")
   end
 end
