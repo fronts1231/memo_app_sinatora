@@ -49,7 +49,6 @@ get '/:id/edit' do |n|
   data = CSV.read(DATA_FILE)[n.to_i]
   @title = data[0]
   @content = data[1]
-  @button = "save"
   @directory = "/"
   @index = n
   erb :edit_item
